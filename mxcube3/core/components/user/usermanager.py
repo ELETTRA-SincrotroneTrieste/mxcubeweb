@@ -148,7 +148,7 @@ class BaseUserManager(ComponentBase):
     def _login(self, login_id, password):
         pass
 
-    def login(self, login_id, password):
+    def login(self, login_id: str, password: str, previousUser: str):
         try:
             login_res = self._login(login_id, password)
         except Exception:
@@ -157,7 +157,7 @@ class BaseUserManager(ComponentBase):
             if not "sid" in flask.session:
                 flask.session["sid"] = str(uuid.uuid4())
 
-            user = self.db_create_user(login_id, password, login_res)
+            user = self.db_create_user(login_id, password, login_res, previousUser)
             self.app.server.user_datastore.activate_user(user)
             flask_security.login_user(user, remember=False)
 
@@ -259,7 +259,7 @@ class BaseUserManager(ComponentBase):
                     "number": prop["Proposal"]["number"],
                     "proposalId": prop["Proposal"]["proposalId"],
                     "title": prop["Proposal"]["title"],
-                    "person": prop["Person"]["familyName"],
+                    "person": prop["Person"].get("familyName", ""),
                 }
                 for prop in login_info.get("proposalList", [])
             ]
@@ -302,10 +302,17 @@ class BaseUserManager(ComponentBase):
 
         return list(roles)
 
-    def db_create_user(self, user, password, lims_data):
+    def db_create_user(
+        self, user: str, password: str, lims_data: dict, previousUser: str
+    ):
         sid = flask.session["sid"]
         user_datastore = self.app.server.user_datastore
-        username = f"{user}-{str(uuid.uuid4())}"
+
+        # Re-use already existing user if "re-login"
+        if previousUser and previousUser.startswith(user):
+            username = previousUser
+        else:
+            username = f"{user}-{str(uuid.uuid4())}"
 
         # Make sure that the roles staff and incontrol always
         # exists
@@ -362,7 +369,7 @@ class UserManager(BaseUserManager):
     def __init__(self, app, config):
         super().__init__(app, config)
 
-    def _login(self, login_id, password):
+    def _login(self, login_id: str, password: str):
         login_res = self.app.lims.lims_login(login_id, password, create_session=False)
         inhouse = self.is_inhouse_user(login_id)
 
