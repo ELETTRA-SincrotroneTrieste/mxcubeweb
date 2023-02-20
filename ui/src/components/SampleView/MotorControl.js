@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
-import MotorInput from '../MotorInput/MotorInput';
+import MotorInputContainer from '../../containers/MotorInputContainer';
+
 import TwoAxisTranslationControl from '../MotorInput/TwoAxisTranslationControl';
 import PhaseInput from './PhaseInput';
 import { find } from 'lodash';
@@ -15,29 +16,15 @@ export default class MotorControl extends React.Component {
   }
 
   getMotorComponents(from, to) {
-    const { save } = this.props;
-    const { saveStep } = this.props;
-    const _stop = this.props.stop;
-
     const to_arg = to !== null ? to : this.props.uiproperties.components.length;
 
     return Object.values(this.props.uiproperties.components).
       slice(from, to_arg).map((motor_uiprop) => {
-        const motor = this.props.hardwareObjects[motor_uiprop.attribute];
         return (
           <Col key={`mc-${motor_uiprop.attribute}`} sm={12}>
-            <MotorInput
-              save={save}
-              saveStep={saveStep}
-              step={motor_uiprop.step}
-              value={motor.value}
-              motorName={motor_uiprop.attribute}
-              label={`${motor_uiprop.label}:`}
-              suffix={motor_uiprop.suffix}
-              decimalPoints={motor_uiprop.precision}
-              state={motor.state}
-              stop={_stop}
-              disabled={this.props.motorsDisabled}
+            <MotorInputContainer
+              component={"sample_view"}
+              role={motor_uiprop.role}
             />
           </Col>
         );
@@ -60,6 +47,8 @@ export default class MotorControl extends React.Component {
   }
 
   renderAllMotors() {
+    const diffractometerHo = this.props.hardwareObjects['diffractometer'];
+
     const phaseControl = (
       <div>
         <p className="motor-name">Phase Control:</p>
@@ -67,6 +56,7 @@ export default class MotorControl extends React.Component {
           phase={this.props.sampleViewState.currentPhase}
           phaseList={this.props.sampleViewState.phaseList}
           sendPhase={this.props.sampleViewActions.sendCurrentPhase}
+          state={diffractometerHo.state}
         />
       </div>
     );
