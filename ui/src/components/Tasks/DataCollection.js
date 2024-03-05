@@ -377,6 +377,7 @@ export default connect((state) => {
 
   return {
     path: `${state.login.rootPath}/${subdir}`,
+    subdir: subdir,
     filename: fname,
     acqParametersLimits: limits,
     beamline: state.beamline,
