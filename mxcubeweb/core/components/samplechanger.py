@@ -21,16 +21,18 @@ class SampleChanger(ComponentBase):
         from mxcubeweb.routes import signals
 
         """Initialize hwobj signals."""
-        HWR.beamline.sample_changer.connect("stateChanged", signals.sc_state_changed)
-        HWR.beamline.sample_changer.connect(
-            "isCollisionSafe", signals.is_collision_safe
-        )
-        HWR.beamline.sample_changer.connect(
-            "loadedSampleChanged", signals.loaded_sample_changed
-        )
-        HWR.beamline.sample_changer.connect(
-            "contentsUpdated", signals.sc_contents_update
-        )
+        if HWR.beamline.sample_changer is not None:
+            HWR.beamline.sample_changer.connect(
+                "stateChanged", signals.sc_state_changed)
+            HWR.beamline.sample_changer.connect(
+                "isCollisionSafe", signals.is_collision_safe
+            )
+            HWR.beamline.sample_changer.connect(
+                "loadedSampleChanged", signals.loaded_sample_changed
+            )
+            HWR.beamline.sample_changer.connect(
+                "contentsUpdated", signals.sc_contents_update
+            )
 
         if HWR.beamline.sample_changer_maintenance is not None:
             HWR.beamline.sample_changer_maintenance.connect(
@@ -38,13 +40,15 @@ class SampleChanger(ComponentBase):
             )
 
     def get_sample_list(self):
-        samples_list = HWR.beamline.sample_changer.get_sample_list()
         samples = {}
         samplesByCoords = {}
         order = []
         current_sample = {}
-
-        loaded_sample = HWR.beamline.sample_changer.get_loaded_sample()
+        samples_list = []
+        loaded_sample = None
+        if HWR.beamline.sample_changer:
+            samples_list = HWR.beamline.sample_changer.get_sample_list()
+            loaded_sample = HWR.beamline.sample_changer.get_loaded_sample()
 
         for s in samples_list:
             if not s.is_present():
