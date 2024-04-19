@@ -416,17 +416,18 @@ class Lims(ComponentBase):
             except (TypeError, ValueError, KeyError):
                 continue
             else:
-                if HWR.beamline.sample_changer.__class__.__TYPE__ in [
-                    "Flex Sample Changer",
-                    "FlexHCD",
-                    "RoboDiff",
-                ]:
-                    cell = int(math.ceil((basket) / 3.0))
-                    puck = basket - 3 * (cell - 1)
-                    sample_info["containerSampleChangerLocation"] = "%d:%d" % (
-                        cell,
-                        puck,
-                    )
+                if HWR.beamline.sample_changer:
+                    if HWR.beamline.sample_changer.__class__.__TYPE__ in [
+                        "Flex Sample Changer",
+                        "FlexHCD",
+                        "RoboDiff",
+                    ]:
+                        cell = int(math.ceil((basket) / 3.0))
+                        puck = basket - 3 * (cell - 1)
+                        sample_info["containerSampleChangerLocation"] = "%d:%d" % (
+                            cell,
+                            puck,
+                        )
 
             try:
                 lims_location = sample_info[
