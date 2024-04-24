@@ -113,8 +113,8 @@ class MXCUBEAppConfigModel(BaseModel):
     )
 
     # Port from which the video_stream process (https://github.com/mxcube/video-streamer)
-    # sreams video. The process runs in seperate process (on localhost)
-    VIDEO_STREAM_PORT: str = Field("", description="Video stream PORT")
+    # streams video. The process runs in separate process (on localhost)
+    VIDEO_STREAM_PORT: str = Field('8000', description="Video stream PORT")
     USE_EXTERNAL_STREAMER: bool = Field(
         False,
         description=(
