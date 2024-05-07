@@ -9,7 +9,7 @@ import json
 
 from mxcubecore import HardwareRepository as HWR
 from mxcubecore.model import queue_model_objects as qmo
-
+from mxcubeweb.exceptions import MX3AuthorizationError
 from mxcubeweb.core.components.component_base import ComponentBase
 from mxcubeweb.core.util import fsutils
 
@@ -229,6 +229,17 @@ class Lims(ComponentBase):
             for prop in session["proposal_list"]:
                 todays_session = HWR.beamline.lims.get_todays_session(prop)
                 prop["Session"] = [todays_session["session"]]
+
+            # Filter proposals with no sessions
+            session["proposal_list"] = list(
+                filter(lambda proposal_info: proposal_info['Session'] != [{}],
+                       session["proposal_list"]))
+
+            if not session["proposal_list"]:
+                raise MX3AuthorizationError(
+                    "User is not authorized to login since he has no sessions"
+                    " today, \"session['proposal_list']\" is empty",
+                    ui_msg="No sessions available today")
 
             if hasattr(
                 HWR.beamline.session, "commissioning_fake_proposal"

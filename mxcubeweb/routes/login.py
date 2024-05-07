@@ -2,6 +2,7 @@ import logging
 
 from flask import Blueprint, request, jsonify, make_response, session
 from mxcubeweb.core.util import networkutils
+from mxcubeweb.exceptions import MX3Exception
 from flask_login import current_user
 
 
@@ -40,7 +41,10 @@ def init_route(app, server, url_prefix):
             )
             logging.getLogger("MX3.HWR").exception("")
             logging.getLogger("MX3.HWR").info(msg)
-            res = make_response(jsonify({"msg": "Could not authenticate"}), 200)
+            msg = "Could not login"
+            if isinstance(ex, MX3Exception) and ex.ui_msg is not None:
+                msg = "%s\nDetails: %s" % (msg, ex.ui_msg)
+            res = make_response(jsonify({"msg": msg}), 200)
         else:
             res = make_response(jsonify({"msg": ""}), 200)
             session.permanent = True
