@@ -13,6 +13,11 @@ export default class MotorControls extends React.Component {
     this.state = { showAll: false };
   }
 
+  renderAllMotorInputs(){
+    return this.renderMotorInputs(
+      ["omega", "kappa", "kappa_phi", "phix", "phiy", "phiz", "sampx", "sampy"]);
+  }
+
   renderMotorInputs(roles) {
     return this.props.uiproperties.components
       .filter(({ role }) => roles.includes(role))
@@ -32,14 +37,17 @@ export default class MotorControls extends React.Component {
       role: 'sample_horizontal',
     });
 
+    if (!sample_vertical_uiprop || !sample_horizontal_uiprop) {
+      return <Row className="row">{this.renderAllMotorInputs()}</Row>;
+    }
+
     const sample_vertical =
       this.props.hardwareObjects[sample_vertical_uiprop.attribute];
     const sample_horizontal =
       this.props.hardwareObjects[sample_horizontal_uiprop.attribute];
 
     if (!sample_vertical || !sample_horizontal) {
-      return <Row className="row">{this.renderMotorInputs(
-      ["omega", "kappa", "kappa_phi", "phix", "phiy", "phiz", "sampx", "sampy"])}</Row>;
+            return <Row className="row">{this.renderAllMotorInputs()}</Row>;
     }
 
     const { save } = this.props;
