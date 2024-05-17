@@ -41,6 +41,7 @@ class UIComponentModel(BaseModel):
     description: Optional[str]
     width: Optional[int]
     height: Optional[int]
+    invert_bg_color: Optional[bool]
 
     # Set internaly not to be set through configuration
     value_type: Optional[str]
