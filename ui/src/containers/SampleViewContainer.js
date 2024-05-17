@@ -126,6 +126,7 @@ class SampleViewContainer extends Component {
         <Row className="gx-3 mt-2 pt-1">
           <Col sm={1}>
             <DefaultErrorBoundary>
+              {this.props.showPhaseControl ? (
               <div>
                 <p className="motor-name">Phase Control:</p>
                 <PhaseInput
@@ -135,7 +136,7 @@ class SampleViewContainer extends Component {
                   state={diffractometerHo.state}
                 />
               </div>
-
+              ) : null}
               <div>
                 <p className="motor-name">Beam size:</p>
                 <ApertureInput
@@ -335,6 +336,7 @@ function mapStateToProps(state) {
     taskForm: state.taskForm,
     mode: state.general.mode,
     enable2DPoints: state.general.enable2DPoints,
+    showPhaseControl: state.general.showPhaseControl,
     meshResultFormat: state.general.meshResultFormat,
     enableNativeMesh: state.general.useNativeMesh,
 
