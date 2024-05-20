@@ -271,7 +271,8 @@ export function sendRotateToShape(sid) {
 }
 
 export function sendCentringPoint(x, y) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { general } = getState();
     fetch('/mxcube/api/v0.1/sampleview/centring/click', {
       method: 'PUT',
       credentials: 'include',
@@ -284,8 +285,7 @@ export function sendCentringPoint(x, y) {
       .then((response) => response.json())
       .then((json) => {
         const { clicksLeft } = json;
-        let msg = '3-Click Centring: <br />';
-
+        let msg = `${general.manualCentringName} Centring: <br />`;
         dispatch(centringClicksLeft(clicksLeft));
 
         if (clicksLeft === 0) {
@@ -449,6 +449,7 @@ export function sendStartClickCentring() {
 
     const { queue } = getState();
     const { shapes } = getState();
+    const { general } = getState();
     dispatch(unselectShapes(shapes));
 
     if (queue.current.sampleID) {
@@ -472,9 +473,7 @@ export function sendStartClickCentring() {
         .then((json) => {
           const { clicksLeft } = json;
           dispatch(centringClicksLeft(clicksLeft));
-
-          let msg = '3-Click Centring: <br />';
-
+          let msg = `${general.manualCentringName} Centring: <br />`;
           if (clicksLeft === 0) {
             msg += 'Save centring or clicking on screen to restart';
           } else {

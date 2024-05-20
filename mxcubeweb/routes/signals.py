@@ -227,10 +227,11 @@ def sc_maintenance_update(*args):
 def centring_started(method, *args):
     msg = {"method": method}
 
-    if method in ["Computer automatic"]:
+    if method in [HWR.beamline.diffractometer.CENTRING_METHOD_AUTO]:
         msg = {"method": qe.CENTRING_METHOD.LOOP}
-    elif method in ["Manual 3-click"]:
-        msg = {"method": qe.CENTRING_METHOD.MANUAL}
+    elif method in [HWR.beamline.diffractometer.CENTRING_METHOD_MANUAL]:
+        msg = {"method": qe.CENTRING_METHOD.MANUAL,
+               "method_name": HWR.beamline.manual_centring_name}
 
     server.emit("sample_centring", msg, namespace="/hwr")
 
