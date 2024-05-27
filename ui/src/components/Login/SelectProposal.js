@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { Modal, Button, Table } from 'react-bootstrap';
+import { Modal, Button, Table, Alert } from 'react-bootstrap';
 
 class SelectProposal extends React.Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class SelectProposal extends React.Component {
   }
 
   render() {
+    const current_date = (new Date()).toUTCString();
     const sortedlist = this.props.data.proposalList.sort((a, b) =>
       a.number < b.number ? 1 : -1,
     );
@@ -60,16 +61,20 @@ class SelectProposal extends React.Component {
         </Modal.Header>
         <Modal.Body>
           <div style={{ overflow: 'auto', height: '550px' }}>
-            <Table bordered hover>
-              <thead>
-                <tr>
-                  <th>Proposal Number</th>
-                  <th>Title</th>
-                  <th>Person</th>
-                </tr>
-              </thead>
-              <tbody>{proposals}</tbody>
-            </Table>
+            {this.props.data.proposalList.length > 0 ? (
+              <Table bordered hover>
+                <thead>
+                  <tr>
+                    <th>Proposal Number</th>
+                    <th>Title</th>
+                    <th>Person</th>
+                  </tr>
+                </thead>
+                <tbody>{proposals}</tbody>
+              </Table>
+            ) : ( <Alert bg='light'>
+                    You have no experiments scheduled for today ({current_date})
+                  </Alert>)}
           </div>
         </Modal.Body>
         <Modal.Footer>
