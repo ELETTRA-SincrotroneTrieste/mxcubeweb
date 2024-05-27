@@ -56,11 +56,15 @@ class Beamline(ComponentBase):
             logging.getLogger("MX3.HWR").exception(msg)
 
         try:
-            HWR.beamline.xrf_spectrum.connect(
-                HWR.beamline.xrf_spectrum,
-                "xrf_task_progress",
-                signals.xrf_task_progress,
-            )
+            xrf_spectrum = HWR.beamline.xrf_spectrum
+            if xrf_spectrum is not None:
+                HWR.beamline.xrf_spectrum.connect(
+                    HWR.beamline.xrf_spectrum,
+                    "xrf_task_progress",
+                    signals.xrf_task_progress,
+                )
+            else:
+                logging.getLogger("MX3.HWR").warning("xrf_spectrum is not defined")
         except Exception as ex:
             logging.getLogger("MX3.HWR").error(
                 "error loading plotting hwo: %s" % str(ex)
