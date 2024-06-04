@@ -13,9 +13,14 @@ export default class MotorControls extends React.Component {
     this.state = { showAll: false };
   }
 
-  renderMotorInputs(from, to) {
+  renderAllMotorInputs(){
+    return this.renderMotorInputs(
+      ["omega", "kappa", "kappa_phi", "phix", "phiy", "phiz", "sampx", "sampy"]);
+  }
+
+  renderMotorInputs(roles) {
     return this.props.uiproperties.components
-      .slice(from, to)
+      .filter(({ role }) => roles.includes(role))
       .map(({ attribute, role }) => (
         <Col key={attribute} sm={12}>
           <MotorInputContainer component="sample_view" role={role} />
@@ -32,13 +37,17 @@ export default class MotorControls extends React.Component {
       role: 'sample_horizontal',
     });
 
+    if (!sample_vertical_uiprop || !sample_horizontal_uiprop) {
+      return <Row className="row">{this.renderAllMotorInputs()}</Row>;
+    }
+
     const sample_vertical =
       this.props.hardwareObjects[sample_vertical_uiprop.attribute];
     const sample_horizontal =
       this.props.hardwareObjects[sample_horizontal_uiprop.attribute];
 
     if (!sample_vertical || !sample_horizontal) {
-      return <Row className="row">{this.renderMotorInputs(0, 8)}</Row>;
+            return <Row className="row">{this.renderAllMotorInputs()}</Row>;
     }
 
     const { save } = this.props;
@@ -55,7 +64,7 @@ export default class MotorControls extends React.Component {
 
     return (
       <Row className="row">
-        {this.renderMotorInputs(0, 3)}
+        {this.renderMotorInputs(["omega", "kappa", "kappa_phi"])}
         <div>
           <div>
             <TwoAxisTranslationControl
@@ -97,7 +106,7 @@ export default class MotorControls extends React.Component {
 
             {this.state.showAll && (
               <div style={{ marginTop: '0.5rem' }}>
-                {this.renderMotorInputs(3, 8)}
+                {this.renderMotorInputs(["phix", "phiy", "phiz", "sampx", "sampy"])}
               </div>
             )}
           </div>
