@@ -300,6 +300,7 @@ class SampleViewContainer extends Component {
                 setBeamlineAttribute={this.props.setBeamlineAttribute}
                 sendDisplayImage={this.props.sendDisplayImage}
                 meshResultFormat={this.props.meshResultFormat}
+                manualCentringName={this.props.manualCentringName}
               />
             </DefaultErrorBoundary>
           </Col>
@@ -337,6 +338,7 @@ function mapStateToProps(state) {
     mode: state.general.mode,
     enable2DPoints: state.general.enable2DPoints,
     showPhaseControl: state.general.showPhaseControl,
+    manualCentringName: state.general.manualCentringName,
     meshResultFormat: state.general.meshResultFormat,
     enableNativeMesh: state.general.useNativeMesh,
 

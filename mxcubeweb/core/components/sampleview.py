@@ -452,7 +452,8 @@ class SampleView(ComponentBase):
                 )
                 HWR.beamline.diffractometer.cancel_centring_method(reject=True)
 
-            logging.getLogger("user_level_log").info("Centring using 3-click centring")
+            logging.getLogger("user_level_log").info(
+                "Centring using %s centring" % HWR.beamline.manual_centring_name)
 
             HWR.beamline.diffractometer.start_centring_method(
                 HWR.beamline.diffractometer.MANUAL3CLICK_MODE

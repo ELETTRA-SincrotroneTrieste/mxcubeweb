@@ -35,6 +35,12 @@ class AppSettingsModel(BaseModel):
             " True by default"
         ),
     )
+    manual_centring_name: str = Field(
+        description=(
+            "This is the name which will be showed in the frontend as manual"
+            " centring procedure, '3-click' by default"
+        ),
+    )
 
     class Config:
         extra: "forbid"  # noqa: F821

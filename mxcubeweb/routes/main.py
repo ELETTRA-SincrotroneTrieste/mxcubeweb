@@ -56,6 +56,7 @@ def init_route(app, server, url_prefix):
                 "use_native_mesh": HWR.beamline.use_native_mesh,
                 "enable_2d_points": HWR.beamline.enable_2d_points,
                 "enable_phase_control": HWR.beamline.enable_phase_control,
+                "manual_centring_name": HWR.beamline.manual_centring_name,
             }
         )
 

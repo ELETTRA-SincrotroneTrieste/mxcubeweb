@@ -56,6 +56,7 @@ function generalReducer(state = INITIAL_STATE, action = {}) {
         meshResultFormat: action.data.general.mesh_result_format,
         useNativeMesh: action.data.general.use_native_mesh,
         showPhaseControl: action.data.general.enable_phase_control,
+        manualCentringName: action.data.general.manual_centring_name,
       };
     }
     case 'APPLICATION_FETCHED': {

@@ -357,7 +357,7 @@ class ServerIO {
       if (data.method === CLICK_CENTRING) {
         this.dispatch(startClickCentring());
         const msg =
-          '3-Click Centring: <br /> Select centered position or center';
+          `${data.method_name} Centring: <br /> Select centered position or center`;
         this.dispatch(videoMessageOverlay(true, msg));
       } else {
         const msg = 'Auto loop centring: <br /> Save position or re-center';

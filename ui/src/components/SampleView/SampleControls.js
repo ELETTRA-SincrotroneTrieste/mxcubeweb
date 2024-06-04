@@ -215,12 +215,13 @@ export default class SampleControls extends React.Component {
           <Button
             className={styles.controlBtn}
             active={this.props.clickCentring}
-            title="Start 3-click centring"
+            title={`Start ${this.props.manualCentringName} centring`}
             data-toggle="tooltip"
             onClick={this.toggleCentring}
           >
             <i className={`${styles.controlIcon} fas fa-circle-notch`} />
-            <span className={styles.controlLabel}>3-click centring</span>
+            <span className={styles.controlLabel}>
+              {`${this.props.manualCentringName} centring`}</span>
           </Button>
         )}
         {this.props.getControlAvailability('focus') && (
