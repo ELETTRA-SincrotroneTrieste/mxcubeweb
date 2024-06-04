@@ -120,9 +120,9 @@ export default class InOutSwitch extends React.Component {
     const { showValueOvelay } = this.state;
     let msgBgStyle = 'warning';
     if (this.props.data.value === this.props.onText) {
-      msgBgStyle = 'success';
+      msgBgStyle = this.props.invertBgColor ? 'danger' : 'success';
     } else if (this.props.data.value === this.props.offText) {
-      msgBgStyle = 'danger';
+      msgBgStyle = this.props.invertBgColor ? 'success' : 'danger';
     }
 
     let btn = (
@@ -189,5 +189,6 @@ InOutSwitch.defaultProps = {
   labelText: '',
   pkey: undefined,
   onSave: undefined,
+  invertBgColor: false,
   data: { value: 'undefined', state: 'IN', msg: 'UNKNOWN' },
 };

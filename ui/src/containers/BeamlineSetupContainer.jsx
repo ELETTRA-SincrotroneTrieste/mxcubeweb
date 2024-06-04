@@ -95,6 +95,7 @@ class BeamlineSetupContainer extends React.Component {
               acts.push(
                 <Nav.Item key={key} className="ms-3">
                   <InOutSwitch
+                    invertBgColor={uiprop.invert_bg_color}
                     onText={
                       this.props.beamline.hardwareObjects[key].commands[0]
                     }
@@ -113,6 +114,7 @@ class BeamlineSetupContainer extends React.Component {
               acts.push(
                 <Nav.Item key={key} className="ms-3">
                   <InOutSwitch
+                    invertBgColor={uiprop.invert_bg_color}
                     onText={
                       this.props.beamline.hardwareObjects[key].commands[0]
                     }
