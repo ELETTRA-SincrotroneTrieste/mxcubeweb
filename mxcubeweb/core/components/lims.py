@@ -230,6 +230,11 @@ class Lims(ComponentBase):
                 todays_session = HWR.beamline.lims.get_todays_session(prop)
                 prop["Session"] = [todays_session["session"]]
 
+            # Filter proposals with no sessions
+            session["proposal_list"] = list(
+                filter(lambda proposal_info: proposal_info['Session'] != [{}],
+                       session["proposal_list"]))
+
             if hasattr(
                 HWR.beamline.session, "commissioning_fake_proposal"
             ) and HWR.beamline.session.is_inhouse(loginID, None):
