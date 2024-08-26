@@ -347,10 +347,11 @@ class UserManager(BaseUserManager):
     def _login(self, login_id: str, password: str):
         login_res = self.app.lims.lims_login(login_id, password, create_session=False)
         inhouse = self.is_inhouse_user(login_id)
+        local_domains = self.app.CONFIG.app.LOCAL_DOMAINS
 
         info = {
             "valid": self.app.lims.lims_valid_login(login_res),
-            "local": is_local_host(),
+            "local": is_local_host(local_domains),
             "existing_session": self.app.lims.lims_existing_session(login_res),
             "inhouse": inhouse,
         }
@@ -371,7 +372,7 @@ class UserManager(BaseUserManager):
                     )
 
         # Only allow in-house log-in from local host
-        if inhouse and not (inhouse and is_local_host()):
+        if inhouse and not (inhouse and is_local_host(local_domains)):
             raise Exception("In-house only allowed from localhost")
 
         non_inhouse_active_users = self.active_logged_in_users(exclude_inhouse=True)
@@ -396,11 +397,11 @@ class UserManager(BaseUserManager):
                 raise Exception("Another user is already logged in")
 
         # Only allow local login when remote is disabled
-        if not self.app.ALLOW_REMOTE and not is_local_host():
+        if not self.app.ALLOW_REMOTE and not is_local_host(local_domains):
             raise Exception("Remote access disabled")
 
         # Only allow remote logins with existing sessions
-        if self.app.lims.lims_valid_login(login_res) and is_local_host():
+        if self.app.lims.lims_valid_login(login_res) and is_local_host(local_domains):
             if not self.app.lims.lims_existing_session(login_res):
                 login_res = self.app.lims.create_lims_session(login_res)
 
