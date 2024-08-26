@@ -122,6 +122,10 @@ class MXCUBEAppConfigModel(BaseModel):
             "True to use video stream produced by external software, false otherwise"
         ),
     )
+    LOCAL_DOMAINS: List[str] = Field(
+        [],
+        description="If the hostname of the connected client ends with one of these"
+                    " domains it will be considered \"local\"")
     mode: ModeEnum = Field(ModeEnum.OSC, description="MXCuBE mode SSX or OSC")
     usermanager: UserManagerConfigModel
     ui_properties: Dict[str, UIPropertiesModel] = {}
