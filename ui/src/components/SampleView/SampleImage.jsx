@@ -388,6 +388,10 @@ export default class SampleImage extends React.Component {
     document.querySelector('#sample-img').style.height = `${h}px`;
     document.querySelector('#sample-img').style.width = `${w}px`;
     document.querySelector('#insideWrapper').style.height = `${h}px`;
+
+    // Set position (centered) of the Sample Controls
+    document.querySelector('#sample-ctrls').style.left = `${w/2}px`;
+
   }
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
