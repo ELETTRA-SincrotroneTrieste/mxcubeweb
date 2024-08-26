@@ -183,7 +183,7 @@ export default class SampleControls extends React.Component {
     const zoom_motor = this.props.hardwareObjects[zoom_motor_uiprop.attribute];
 
     return (
-      <div className={styles.controls}>
+      <div id="sample-ctrls" className={styles.controls}>
         {this.props.getControlAvailability('snapshot') && (
           <Button
             as="a"

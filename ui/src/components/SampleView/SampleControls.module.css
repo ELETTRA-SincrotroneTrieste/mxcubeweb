@@ -2,7 +2,6 @@
   display: flex;
   position: absolute;
   top: 0;
-  left: 50%;
   z-index: 500;
   transform: translateX(-50%);
   background-color: rgba(34, 34, 34, 0.8);
