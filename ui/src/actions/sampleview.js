@@ -154,6 +154,10 @@ export function toggleAutoScale(width = 1) {
   return { type: 'TOGGLE_AUTO_SCALE', width };
 }
 
+export function disableAutoScale() {
+  return { type: 'DISABLE_AUTO_SCALE'};
+}
+
 export function videoMessageOverlay(show, msg) {
   return { type: 'SHOW_VIDEO_MESSAGE_OVERLAY', show, msg };
 }
