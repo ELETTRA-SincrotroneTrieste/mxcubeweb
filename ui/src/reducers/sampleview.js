@@ -116,6 +116,9 @@ function sampleViewReducer(state = INITIAL_STATE, action = {}) {
     case 'SET_VIDEO_SIZE': {
       return { ...state, videoSize: action.width };
     }
+    case 'DISABLE_AUTO_SCALE': {
+      return { ...state, autoScale: 0, imageRatio: 1};
+    }
     case 'TOGGLE_AUTO_SCALE': {
       const imageRatio = state.autoScale ? 1 : action.width / state.width;
       return { ...state, autoScale: !state.autoScale, imageRatio };

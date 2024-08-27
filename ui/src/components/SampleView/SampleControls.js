@@ -119,9 +119,10 @@ export default class SampleControls extends React.Component {
         <Dropdown.Item
           key={`${size[0]} x ${size[1]}`}
           eventKey="1"
-          onClick={() =>
-            this.props.sampleViewActions.setVideoSize(size[0], size[1])
-          }
+          onClick={() => {
+            this.props.sampleViewActions.disableAutoScale();
+            this.props.sampleViewActions.setVideoSize(size[0], size[1]);
+          }}
         >
           <span className={`fa ${sizeGClass}`} /> {`${size[0]} x ${size[1]}`}
         </Dropdown.Item>
