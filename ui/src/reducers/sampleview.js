@@ -1,3 +1,4 @@
+const AUTO_SCALE_KEY = 'auto-scale';
 const INITIAL_STATE = {
   clickCentring: false,
   clickCentringPoints: [],
@@ -11,8 +12,8 @@ const INITIAL_STATE = {
   videoURL: '',
   sourceIsScalable: false,
   videoSizes: [],
-  autoScale: true,
-  imageRatio: 0,
+  autoScale: (localStorage.getItem(AUTO_SCALE_KEY) !== "false"),
+  imageRatio: (localStorage.getItem(AUTO_SCALE_KEY) === "false" ? 1 : 0),
   pixelsPerMm: [0, 0],
   sourceScale: 1,
   motorSteps: {
@@ -117,9 +118,11 @@ function sampleViewReducer(state = INITIAL_STATE, action = {}) {
       return { ...state, videoSize: action.width };
     }
     case 'DISABLE_AUTO_SCALE': {
-      return { ...state, autoScale: 0, imageRatio: 1};
+      localStorage.setItem(AUTO_SCALE_KEY, false);
+      return { ...state, autoScale: false, imageRatio: 1};
     }
     case 'TOGGLE_AUTO_SCALE': {
+      localStorage.setItem(AUTO_SCALE_KEY, !state.autoScale);
       const imageRatio = state.autoScale ? 1 : action.width / state.width;
       return { ...state, autoScale: !state.autoScale, imageRatio };
     }
