@@ -940,6 +940,7 @@ class SampleListViewContainer extends React.Component {
                   variant="outline-secondary"
                   className="all-samples-actions-menu"
                   title="Context Menu to Add DC or Workflow to all filtered Samples Options"
+                  disabled={Object.keys(this.props.sampleList).length === 0}
                   onClick={(e) => {
                     this.displayContextMenu(
                       e,
