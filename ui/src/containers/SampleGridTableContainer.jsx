@@ -1165,12 +1165,16 @@ class SampleGridTableContainer extends React.Component {
         <Dropdown.Header>
           <i className="fas fa-plus" /> Add{' '}
         </Dropdown.Header>
-        <Dropdown.Item onClick={this.props.showDataCollectionForm}>
-          Data collection
-        </Dropdown.Item>
-        <Dropdown.Item onClick={this.props.showCharacterisationForm}>
-          Characterisation
-        </Dropdown.Item>
+        { 'datacollection' in this.props.defaultParameters ? (
+          <Dropdown.Item onClick={this.props.showDataCollectionForm}>
+            Data collection
+          </Dropdown.Item>
+        ) : null}
+        { 'characterisation' in this.props.defaultParameters ? (
+          <Dropdown.Item onClick={this.props.showCharacterisationForm}>
+            Characterisation
+          </Dropdown.Item>
+        ) : null}
         {this.renderWorkflowMenuOptions()}
         <Dropdown.Divider />
         <Dropdown.Header>
@@ -1357,6 +1361,7 @@ function mapStateToProps(state) {
     viewMode: state.sampleGrid.viewMode,
     contextMenu: state.contextMenu.genericContextMenu,
     sampleChanger: state.sampleChanger,
+    defaultParameters: state.taskForm.defaultParameters,
   };
 }
 
