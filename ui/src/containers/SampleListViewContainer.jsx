@@ -13,7 +13,7 @@ import {
   Col,
   Form,
   Button,
-  SplitButton,
+  ButtonGroup,
   DropdownButton,
   InputGroup,
   Dropdown,
@@ -814,22 +814,32 @@ class SampleListViewContainer extends React.Component {
           >
             <Row className="samples-grid-table-row-header">
               <Col sm={5} className="d-flex">
-                <SplitButton
-                  variant="outline-secondary"
-                  className="nowrap-style"
-                  id="split-button-sample-changer-selection"
-                  disabled={this.props.queue.queueStatus === QUEUE_RUNNING}
-                  title="Get samples from SC"
-                  onClick={this.getSamplesFromSC}
-                >
-                  <Dropdown.Item
+                <ButtonGroup id="split-button-sample-changer-selection">
+                  <Button
+                    variant="outline-secondary"
                     className="nowrap-style"
-                    eventKey="2"
-                    onClick={this.showAddSampleForm}
+                    disabled={this.props.queue.queueStatus === QUEUE_RUNNING || this.props.sampleChanger.state}
+                    onClick={this.getSamplesFromSC}
                   >
-                    Create new sample
-                  </Dropdown.Item>
-                </SplitButton>
+                    Get samples from SC
+                  </Button>
+                  <Dropdown as={ButtonGroup}>
+                    <Dropdown.Toggle
+                      split
+                      variant="outline-secondary"
+                      disabled={this.props.queue.queueStatus === QUEUE_RUNNING}
+                    />
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        className="nowrap-style"
+                        eventKey="2"
+                        onClick={this.showAddSampleForm}
+                      >
+                        Create new sample
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </ButtonGroup>
                 <span style={{ marginLeft: '1.5em' }} />
                 <OverlayTrigger
                   placement="bottom"
