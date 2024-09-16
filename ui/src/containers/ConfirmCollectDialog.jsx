@@ -24,6 +24,7 @@ import NumSnapshotsDropDown from './NumSnapshotsDropDown.jsx';
 import { showConfirmCollectDialog } from '../actions/queueGUI';
 import {
   TASK_UNCOLLECTED,
+  FULLY_AUTOMATIC_CENTRING,
   AUTO_LOOP_CENTRING,
   CLICK_CENTRING,
 } from '../constants';
@@ -44,6 +45,14 @@ export class ConfirmCollectDialog extends React.Component {
     this.collectText = this.collectText.bind(this);
     this.tasksToCollect = this.tasksToCollect.bind(this);
     this.setNumSnapshots = this.setNumSnapshots.bind(this);
+    if (this.props.centringMethods !== undefined &&
+     !(this.props.centringMethods.includes(AUTO_LOOP_CENTRING)
+     || this.props.centringMethods.includes(FULLY_AUTOMATIC_CENTRING))){
+      this.autoCentring = false;
+    } else {
+      this.autoCentring = true;
+    }
+
   }
 
   componentDidMount() {
@@ -368,6 +377,7 @@ export class ConfirmCollectDialog extends React.Component {
                 onClick={this.autoLoopCentringOnClick}
                 id="auto-lopp-centring"
                 label="Auto loop centring"
+                disabled={!this.autoCentring}
               />
               {autoMountNext ? (
                 <Form.Check
@@ -410,6 +420,7 @@ function mapStateToProps(state) {
     queue: state.queue,
     sampleGrid: state.sampleGrid,
     login: state.login,
+    centringMethods: state.beamline.availableCentringMethods,
   };
 }
 

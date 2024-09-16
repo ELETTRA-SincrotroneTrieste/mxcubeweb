@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Form, Dropdown } from 'react-bootstrap';
 
-import { AUTO_LOOP_CENTRING, CLICK_CENTRING } from '../constants';
+import { FULLY_AUTOMATIC_CENTRING, AUTO_LOOP_CENTRING, CLICK_CENTRING } from '../constants';
 
 import GroupFolderInput from './GroupFolderInput.jsx';
 import NumSnapshotsDropDown from './NumSnapshotsDropDown.jsx';
@@ -29,6 +29,13 @@ class QueueSettings extends React.Component {
 
     this.inputValue = '';
     this.state = { validationState: 'success' };
+    if (this.props.centringMethods !== undefined &&
+    !(this.props.centringMethods.includes(AUTO_LOOP_CENTRING)
+    || this.props.centringMethods.includes(FULLY_AUTOMATIC_CENTRING))){
+      this.autoCentring = false;
+    } else {
+      this.autoCentring = true;
+    }
   }
 
   setGroupFolderInput() {
@@ -91,6 +98,7 @@ class QueueSettings extends React.Component {
                 this.props.queueState.centringMethod === AUTO_LOOP_CENTRING
               }
               label="Auto loop centring"
+              disabled={!this.autoCentring}
             />
           </Dropdown.Item>
           <Dropdown.Item>
@@ -133,6 +141,7 @@ class QueueSettings extends React.Component {
 function mapStateToProps(state) {
   return {
     queueState: state.queue,
+    centringMethods: state.beamline.availableCentringMethods,
   };
 }
 

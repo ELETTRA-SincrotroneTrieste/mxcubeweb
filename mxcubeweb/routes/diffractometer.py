@@ -123,4 +123,19 @@ def init_route(app, server, url_prefix):
         resp.status_code = 200
         return resp
 
+    @bp.route("/available_centring_methods", methods=["GET"])
+    @server.restrict
+    def get_centring_methods():
+        """
+        Get availables centring procedures when mounting samples
+
+        :statuscode: 200: no error
+        :statuscode: 409: error
+
+        """
+        centring_methods = app.beamline.get_available_centring_methods()
+        resp = jsonify(centring_methods)
+        resp.status_code = 200
+        return resp
+
     return bp

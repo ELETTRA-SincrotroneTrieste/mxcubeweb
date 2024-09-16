@@ -4,7 +4,7 @@
 
 import fetch from 'isomorphic-fetch';
 import { fetchBeamInfo, fetchBeamlineSetup } from '../api/beamline';
-import { fetchDiffractometerInfo } from '../api/diffractometer';
+import { fetchDiffractometerInfo, fetchAvailableCentringMethods } from '../api/diffractometer';
 import { fetchLogMessages } from '../api/log';
 import { fetchApplicationSettings, fetchUIProperties } from '../api/main';
 import { fetchAvailableWorkflows } from '../api/workflow';
@@ -202,6 +202,11 @@ export function getInitialState(navigate) {
       fetchDiffractometerInfo()
         .then((json) => {
           Object.assign(state, json);
+        })
+        .catch(notify),
+      fetchAvailableCentringMethods()
+        .then((json) => {
+          state.centringMethods = json;
         })
         .catch(notify),
       detectorInfo

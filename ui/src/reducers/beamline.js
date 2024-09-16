@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { STATE } from '../actions/beamline';
-import { RUNNING, MOTOR_STATE } from '../constants';
+import { RUNNING, MOTOR_STATE, CLICK_CENTRING, AUTO_LOOP_CENTRING, FULLY_AUTOMATIC_CENTRING } from '../constants';
 
 /**
  *  Initial redux state for beamline hardwareObjects, object containing each beamline
@@ -140,6 +140,11 @@ export const INITIAL_STATE = {
   plotsData: {},
   availableMethods: {},
   energyScanElements: [],
+  availableCentringMethods: [
+   CLICK_CENTRING,
+   AUTO_LOOP_CENTRING,
+   FULLY_AUTOMATIC_CENTRING
+  ]
 };
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -283,6 +288,7 @@ function beamlineReducer(state = INITIAL_STATE, action = {}) {
         beamlineActionsList: [...action.data.beamlineSetup.actionsList],
         availableMethods: action.data.beamlineSetup.availableMethods,
         energyScanElements: action.data.beamlineSetup.energyScanElements,
+        availableCentringMethods: action.data.centringMethods,
       };
     }
     case 'BL_MACH_INFO': {
