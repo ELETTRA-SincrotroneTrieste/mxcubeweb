@@ -283,6 +283,7 @@ class MXCUBEApplication:
         MXCUBEApplication.ALLOW_REMOTE = allow_remote
         MXCUBEApplication.TIMEOUT_GIVES_CONTROL = ra_timeout
         MXCUBEApplication.CONFIG = cfg
+        MXCUBEApplication.CENTRING_METHOD = cfg.app.DEFAULT_CENTRING_METHOD
 
         MXCUBEApplication.mxcubecore.init(MXCUBEApplication)
 

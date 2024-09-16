@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
 import datetime
 
+from mxcubecore import queue_entry
 
 class FlaskConfigModel(BaseModel):
     SECRET_KEY: str = Field(
@@ -121,6 +122,15 @@ class MXCUBEAppConfigModel(BaseModel):
             "True to use video stream produced by external software, false otherwise"
         ),
     )
+<<<<<<< Updated upstream
+=======
+    LOCAL_DOMAINS: List[str] = Field(
+        [],
+        description="If the hostname of the connected client ends with one of these"
+                    " domains it will be considered \"local\"")
+    DEFAULT_CENTRING_METHOD: str = Field(queue_entry.CENTRING_METHOD.LOOP,
+                                 description="Default centring method")
+>>>>>>> Stashed changes
     mode: ModeEnum = Field(ModeEnum.OSC, description="MXCuBE mode SSX or OSC")
     usermanager: UserManagerConfigModel
     ui_properties: Dict[str, UIPropertiesModel] = {}
