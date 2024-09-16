@@ -17,3 +17,7 @@ export function sendUpdateCurrentPhase(phase) {
 export function sendUpdateAperture(diameter) {
   return endpoint.put({ diameter }, '/aperture').res();
 }
+
+export function fetchAvailableCentringMethods() {
+  return endpoint.get('/available_centring_methods').json();
+}

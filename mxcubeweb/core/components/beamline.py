@@ -6,6 +6,7 @@ from mxcubecore import HardwareRepository as HWR
 from mxcubeweb.core.adapter.beamline_adapter import BeamlineAdapter
 from mxcubeweb.core.components.component_base import ComponentBase
 from mxcubeweb.core.components.queue import READY
+from mxcubecore.queue_entry.base_queue_entry import CENTRING_METHOD
 
 
 class Beamline(ComponentBase):
@@ -327,6 +328,17 @@ class Beamline(ComponentBase):
             ret["phaseList"] = []
 
         return ret
+
+    def get_available_centring_methods(self):
+        methods_names = HWR.beamline.diffractometer.get_available_centring_methods()
+        available_methods = []
+        for method in methods_names:
+            if method == HWR.beamline.diffractometer.MANUAL3CLICK_MODE:
+                available_methods.append(CENTRING_METHOD.MANUAL)
+            elif method == HWR.beamline.diffractometer.CENTRING_METHOD_AUTO:
+                available_methods.append(CENTRING_METHOD.LOOP)
+                available_methods.append(CENTRING_METHOD.FULLY_AUTOMATIC)
+        return available_methods
 
     def get_detector_info(self):
         try:
