@@ -280,13 +280,15 @@ class DataCollection extends React.Component {
                 <InputField propName="kappa" type="number" label="Kappa" />
                 <InputField propName="kappa_phi" type="number" label="Phi" />
               </FieldsRow>
+              {(this.props.initialValues?.detector_modes?.length !== 0) ? (
               <FieldsRow>
                 <SelectField
                   propName="detector_mode"
                   label="Detector mode"
-                  list={['0', 'C18', 'C12', 'C2']}
+                  list={this.props.initialValues?.detector_modes ?? ['0', 'C18', 'C12', 'C2']}
                 />
               </FieldsRow>
+              ): null}
             </CollapsableRows>
           </Form>
 
