@@ -80,7 +80,7 @@ class QueueSettings extends React.Component {
               onChange={this.autoMountNextOnClick}
               checked={this.props.queueState.autoMountNext}
               label="Automount next sample"
-              disabled={this.props.sampleChangerState === 'DISABLED'}
+              disabled={['DISABLED', 'OFFLINE'].includes(this.props.sampleChangerState)}
             />
           </Dropdown.Item>
           <Dropdown.Item>
