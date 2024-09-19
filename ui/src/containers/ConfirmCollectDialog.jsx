@@ -387,7 +387,7 @@ export class ConfirmCollectDialog extends React.Component {
                   defaultChecked={this.props.queue.autoMountNext}
                   onClick={this.autoMountNextOnClick}
                   label="Auto mount next sample"
-                  disabled={this.props.sampleChangerState === 'DISABLED'}
+                  disabled={['DISABLED', 'OFFLINE'].includes(this.props.sampleChangerState)}
                 />
               ) : (
                 <span />
