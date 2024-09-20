@@ -45,7 +45,7 @@ const warn = (values, props) => {
   if (
     Number.parseFloat(
       props.beamline.hardwareObjects['diffractometer.phi'].value.toFixed(2),
-    ) !== Number.parseFloat(values.osc_start)
+    ) != Number.parseFloat(values.osc_start).toFixed(2)
   ) {
     warnings.osc_start =
       'Entered Oscillation start angle is different from current omega';
