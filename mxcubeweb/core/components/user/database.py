@@ -1,4 +1,5 @@
 import datetime
+import os
 import typing
 
 from sqlalchemy import create_engine
@@ -15,6 +16,8 @@ def init_db(path):
         sessionmaker(autocommit=False, autoflush=False, bind=engine)
     )
     Base.query = db_session.query_property()
+    if os.path.exists(path):
+        Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
     return db_session
