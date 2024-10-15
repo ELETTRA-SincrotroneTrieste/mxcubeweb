@@ -47,6 +47,9 @@ class Lims(ComponentBase):
 
     def sample_list_sync_sample(self, lims_sample):
         lims_code = lims_sample.get("code", None)
+        is_manual_samp = False
+        if hasattr(HWR.beamline.lims, 'is_manual_sample'):
+            is_manual_samp = HWR.beamline.lims.is_manual_sample(lims_sample)
         lims_location = lims_sample.get("lims_location")
         sample_to_update = None
 
@@ -55,11 +58,35 @@ class Lims(ComponentBase):
             sample_to_update = self.app.sample_changer.sc_contents_from_code_get(
                 lims_code
             )
-        elif lims_location:
+        elif lims_location and not is_manual_samp:
             # Asume that the samples have been put in the right place of the SC
             sample_to_update = self.app.sample_changer.sc_contents_from_location_get(
                 lims_location
             )
+        elif lims_location and is_manual_samp:
+            try:
+                # Manual sample already in "SAMPLE_LIST" (limsID should be unique)
+                sample_to_update = list(filter(
+                    lambda samp: samp.get('limsID') == lims_sample['limsID'],
+                    self.app.SAMPLE_LIST['sampleList'].values()))[0]
+            except IndexError:
+                # New manual sample (not in "SAMPLE_LIST")
+                manual_samp_id_list = list(map(
+                    lambda _id: int(_id),
+                    filter(lambda samp_id: samp_id.isdigit(), # Manual sample have a numeric sampleID
+                           self.app.SAMPLE_LIST['sampleList'].keys()))
+                )
+                # Next manual sample id
+                if len(manual_samp_id_list):
+                    sample_id = str(max(manual_samp_id_list) + 1)
+                else:
+                    sample_id = '1'
+
+                sample_to_update = {"sampleID": sample_id, "location": "Manual",
+                                    "tasks": [], "cell_no": 0, "puck_no": 1,
+                                    "type": "Sample", "loadable": True}
+
+            lims_sample.update(sample_to_update)
 
         if sample_to_update:
             loc = sample_to_update["sampleID"]
