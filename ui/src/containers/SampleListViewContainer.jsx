@@ -818,7 +818,7 @@ class SampleListViewContainer extends React.Component {
                   <Button
                     variant="outline-secondary"
                     className="nowrap-style"
-                    disabled={this.props.queue.queueStatus === QUEUE_RUNNING || this.props.sampleChanger.state}
+                    disabled={this.props.queue.queueStatus === QUEUE_RUNNING || ['DISABLED', 'OFFLINE'].includes(this.props.sampleChanger.state)}
                     onClick={this.getSamplesFromSC}
                   >
                     Get samples from SC
