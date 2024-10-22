@@ -139,7 +139,7 @@ class SampleChanger(ComponentBase):
                 if element.is_present():
                     _addElement(contents, element)
         else:
-            contents = {"name": "OFFLINE", "children": []}
+            contents = {"name": "sample changer", "children": []}
 
         return contents
 
