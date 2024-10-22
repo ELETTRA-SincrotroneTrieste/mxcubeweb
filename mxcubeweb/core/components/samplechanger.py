@@ -278,7 +278,10 @@ class SampleChanger(ComponentBase):
         return self.get_sc_contents()
 
     def unmount_current(self):
-        location = HWR.beamline.sample_changer.get_loaded_sample().get_address()
+        if HWR.beamline.sample_changer:
+            location = HWR.beamline.sample_changer.get_loaded_sample().get_address()
+        else:
+            location = "Manual"
         self.unmount_sample_clean_up({"location": location})
 
         return self.get_sc_contents()
