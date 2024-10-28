@@ -33,7 +33,7 @@ from mxcubeweb.core.components.beamline import Beamline
 from mxcubeweb.core.components.sampleview import SampleView
 from mxcubeweb.core.components.queue import Queue
 from mxcubeweb.core.components.workflow import Workflow
-from mxcubeweb.core.models.configmodels import UIComponentModel
+from mxcubeweb.core.models.configmodels import UIComponentModel, UIPropertiesModel
 
 
 removeLoggingHandlers()
@@ -451,6 +451,16 @@ class MXCUBEApplication:
         # (either via config or via mxcubecore.beamline)
 
         for _id, section in MXCUBEApplication.CONFIG.app.ui_properties:
+            # Optional properties
+            if not section:
+                setattr(MXCUBEApplication.CONFIG.app.ui_properties, _id,
+                        UIPropertiesModel(id=_id, components=[]))
+                msg = f"UI property '{str(_id)}' not found in the ui.yaml " \
+                      f"configuration. Check that file to make sure nothing is " \
+                      f"missing. This property will be initialized with an empty list" \
+                      f" of components."
+                logging.getLogger("HWR").warning(msg)
+                continue
             for component in section.components:
                 # Check that the component, if it's a UIComponentModel, corresponds
                 # to a HardwareObjecs that is available and that it can be
