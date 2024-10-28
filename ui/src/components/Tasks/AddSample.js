@@ -25,6 +25,8 @@ function getSampleData(params) {
 
 function AddSample(props) {
   const {
+    sampleName,
+    proteinAcronym,
     show,
     hide,
     addSamplesToList,
@@ -37,6 +39,17 @@ function AddSample(props) {
   const { isSubmitted, errors } = formState;
 
   const { pathname } = useLocation();
+
+  const samp_label = sampleName?.label ?? "Sample name";
+  const samp_pttrn =
+    sampleName?.pattern ? new RegExp(sampleName?.pattern, 'u') : PATTERN;
+  const samp_pttrn_msg = sampleName?.pattern_msg ?? PATTERN_MSG;
+  const samp_max_len = sampleName?.max_length ?? Infinity;
+  const acr_label = proteinAcronym?.label ?? "Protein acronym";
+  const acr_pttrn =
+    proteinAcronym?.pattern ? new RegExp(proteinAcronym?.pattern, 'u') : PATTERN;
+  const acr_pttrn_msg = proteinAcronym?.pattern_msg ?? PATTERN_MSG;
+  const acr_max_len = proteinAcronym?.max_length ?? Infinity;
 
   useEffect(() => {
     if (show) {
@@ -73,14 +86,16 @@ function AddSample(props) {
         <Modal.Body>
           <Form.Group as={Row} className="mb-3" controlId="sampleName">
             <Col sm={4}>
-              <Form.Label column>Sample name</Form.Label>
+              <Form.Label column>{samp_label}</Form.Label>
             </Col>
             <Col sm={8}>
               <Form.Control
                 type="text"
                 {...register('sampleName', {
                   required: REQUIRED_MSG,
-                  pattern: { value: PATTERN, message: PATTERN_MSG },
+                  pattern: { value: samp_pttrn, message: samp_pttrn_msg },
+                  maxLength: { value: samp_max_len,
+                               message: `Max ${samp_max_len} characters`},
                 })}
                 isValid={isSubmitted && !errors.sampleName}
                 isInvalid={isSubmitted && !!errors.sampleName}
@@ -92,14 +107,16 @@ function AddSample(props) {
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="proteinAcronym">
             <Col sm={4}>
-              <Form.Label column>Protein acronym</Form.Label>
+              <Form.Label column>{acr_label}</Form.Label>
             </Col>
             <Col sm={8}>
               <Form.Control
                 type="text"
                 {...register('proteinAcronym', {
                   required: REQUIRED_MSG,
-                  pattern: { value: PATTERN, message: PATTERN_MSG },
+                  pattern: { value: acr_pttrn, message: acr_pttrn_msg },
+                  maxLength: { value: acr_max_len,
+                               message: `Max ${acr_max_len} characters`},
                 })}
                 isValid={isSubmitted && !errors.proteinAcronym}
                 isInvalid={isSubmitted && !!errors.proteinAcronym}
@@ -128,7 +145,19 @@ function AddSample(props) {
   );
 }
 
-const AddSampleContainer = connect(undefined, (dispatch) => ({
+function mapStateToProps(state) {
+  const components = state.uiproperties.manual_sample?.components || [];
+  const sampleNameComponent = components.find(
+    (component) => component.id === "sample_name");
+  const proteinAcronymComponent = components.find(
+    (component) => component.id === "protein_acronym");
+  return {
+    sampleName: sampleNameComponent || null,
+    proteinAcronym: proteinAcronymComponent || null,
+  };
+}
+
+const AddSampleContainer = connect(mapStateToProps, (dispatch) => ({
   addSamplesToList: bindActionCreators(addSamplesToList, dispatch),
   addSamplesToQueue: bindActionCreators(addSamplesToQueue, dispatch),
   addSampleAndMount: bindActionCreators(addSampleAndMount, dispatch),
