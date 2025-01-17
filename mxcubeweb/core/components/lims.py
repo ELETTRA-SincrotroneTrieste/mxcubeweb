@@ -170,10 +170,7 @@ class Lims(ComponentBase):
         res = False
 
         try:
-            res = (
-                login_res.get("Session", {}).get("session", {}).get("sessionId", False)
-                and True
-            )
+            res = login_res.get("Session", [])[0].get("sessionId", False)
         except KeyError:
             res = False
 
