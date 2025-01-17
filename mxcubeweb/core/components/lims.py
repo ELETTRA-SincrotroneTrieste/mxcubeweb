@@ -169,10 +169,11 @@ class Lims(ComponentBase):
     def lims_existing_session(self, login_res):
         res = False
 
-        try:
-            res = bool(login_res.get("Session", [])[0].get("sessionId", False))
-        except IndexError:
-            res = False
+        for prop in login_res.get('proposalList', []):
+            try:
+                res = bool(prop.get("Session", [])[0].get("sessionId", False))
+            except IndexError:
+                pass
 
         return res
 
