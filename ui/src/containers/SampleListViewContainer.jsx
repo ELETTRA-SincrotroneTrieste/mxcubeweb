@@ -304,6 +304,16 @@ class SampleListViewContainer extends React.Component {
   async syncSamples() {
     if (Object.keys(this.props.sampleList).length === 0) {
       await this.getSamplesFromSC();
+
+      // The below ugly line is necessary to make sure that this.props.sampleList is first
+      // updated by getSamplesFromSC() and then by syncSamples(). This prevents
+      // this.props.sampleList from being overwritten by the first call's response.
+      // This issue can occur if syncSamples() runs before getSamplesFromSC(), leading
+      // to inconsistencies and even crashes. For example, in the inQueue() function,
+      // trying to access the dictionary this.props.sampleList[sampleID] could fail if the
+      // sampleID doesn’t exist.
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       this.props.syncSamples();
     } else {
       this.props.syncSamples();
