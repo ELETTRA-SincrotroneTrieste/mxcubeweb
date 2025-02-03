@@ -312,6 +312,7 @@ class SampleListViewContainer extends React.Component {
       // to inconsistencies and even crashes. For example, in the inQueue() function,
       // trying to access the dictionary this.props.sampleList[sampleID] could fail if the
       // sampleID doesn’t exist.
+      /* eslint-disable-next-line no-promise-executor-return */
       await new Promise(resolve => setTimeout(resolve, 500));
 
       this.props.syncSamples();
