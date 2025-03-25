@@ -49,7 +49,7 @@ import {
 
 import { deleteTask, addSampleAndMount } from '../actions/queue';
 
-import { unloadSample } from '../actions/sampleChanger';
+import { unloadSample, loadSample } from '../actions/sampleChanger';
 
 import { showTaskForm } from '../actions/taskForm';
 
@@ -1141,21 +1141,23 @@ class SampleGridTableContainer extends React.Component {
     let sampleData = null;
 
     // If several samples selected mount the first one and add the others to the queue
+    this.props.addSamplesToQueue(Object.keys(this.props.selected));
     this.props.order.some((sampleID) => {
-      if (this.props.selected[sampleID]) {
+      if (this.props.selected[sampleID] && !this.currentSample(sampleID)) {
         sampleData = this.props.sampleList[sampleID];
       }
-      return this.props.selected[sampleID] === true;
+      return this.props.selected[sampleID] === true && this.currentSample(sampleID) === false;
     });
 
     if (sampleData) {
-      this.props.addSampleAndMount(sampleData);
+      this.props.loadSample(sampleData);
       this.props.router.navigate('/datacollection', { replace: true });
     }
   }
 
   unmount() {
     this.props.unloadSample();
+    this.props.removeSelectedSamples();
   }
 
   renderTaskContextMenuItems() {
@@ -1365,6 +1367,7 @@ function mapDispatchToProps(dispatch) {
     showTaskParametersForm: bindActionCreators(showTaskForm, dispatch),
     deleteTask: bindActionCreators(deleteTask, dispatch),
     unloadSample: bindActionCreators(unloadSample, dispatch),
+    loadSample: bindActionCreators(loadSample, dispatch),
     toggleMovableAction: (key) => dispatch(toggleMovableAction(key)),
     showGenericContextMenu: (show, id, x, y) =>
       dispatch(showGenericContextMenu(show, id, x, y)),
