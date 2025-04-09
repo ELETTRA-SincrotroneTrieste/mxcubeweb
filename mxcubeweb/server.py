@@ -45,17 +45,17 @@ class Server:
         return err_msg + ": " + traceback.format_exc(), 409
 
     @staticmethod
-    def kill_processes():
+    def kill_processes(mxcube_pid_path):
         # Killing the processes causes pytest to fail because
         # of non zero exit code, so we dont kill the processes
         # when running the tests
         if not Server.flask.testing:
-            with open("/tmp/mxcube.pid", "r") as f:
+            with open(mxcube_pid_path, "r") as f:
                 pid_list = f.read().strip()
                 pid_list = pid_list.split(" ")
                 pid_list.reverse()
 
-            with open("/tmp/mxcube.pid", "w") as f:
+            with open(mxcube_pid_path, "w") as f:
                 f.write("")
 
             for pid in pid_list:
@@ -100,7 +100,7 @@ class Server:
         # the following test prevents Flask from initializing twice
         # (because of the Reloader)
         if not Server.flask.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-            atexit.register(Server.kill_processes)
+            atexit.register(Server.kill_processes, cfg.flask.MXCUBE_PID_PATH)
 
             with open("/tmp/mxcube.pid", "w") as f:
                 f.write(str(os.getpid()) + " ")
