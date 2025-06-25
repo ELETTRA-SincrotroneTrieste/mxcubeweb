@@ -107,10 +107,6 @@ export function saveImageSize(width, height, pixelsPerMm) {
   return { type: 'SAVE_IMAGE_SIZE', width, height, pixelsPerMm };
 }
 
-export function toggleAutoScale(width = 1) {
-  return { type: 'TOGGLE_AUTO_SCALE', width };
-}
-
 export function videoMessageOverlay(show, msg) {
   return { type: 'SHOW_VIDEO_MESSAGE_OVERLAY', show, msg };
 }
