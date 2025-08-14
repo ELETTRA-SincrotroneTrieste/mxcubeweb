@@ -145,7 +145,7 @@ beamline_setup:
     - label: Cryo
       attribute: cryo
       precision: 2
-      suffix: k
+      suffix: K
     - label: Wavelength
       attribute: energy.wavelength
       step: 0.01
